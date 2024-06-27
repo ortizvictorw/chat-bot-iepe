@@ -1,4 +1,4 @@
-# Stage 1: Build
+# Use the official Node.js image as a base image
 FROM node:18-bullseye as bot
 
 # Set the working directory
@@ -13,24 +13,12 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the application
-RUN npm run build
-
-# Stage 2: Run
-FROM node:18-bullseye
-
-# Set the working directory
-WORKDIR /app
-
-# Copy only the necessary files from the build stage
-COPY --from=bot /app .
+# Expose the port that the app will run on
+EXPOSE ${PORT}
 
 # Set environment variables
 ARG PUBLIC_URL
 ARG PORT
-
-# Expose the specified port
-EXPOSE ${PORT}
 
 # Start the application
 CMD ["npm", "start"]
