@@ -35,7 +35,7 @@ createBot({
   database: adapterDB,
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
   try {
@@ -51,6 +51,8 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  QRPortalWeb();    
+  QRPortalWeb({
+    port:PORT+1
+  });    
   console.log(`Server is running on port ${PORT}`);
 });
