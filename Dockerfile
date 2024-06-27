@@ -1,20 +1,20 @@
-# Use the official Node.js image as a base image
+# Usar la imagen oficial de Node.js como imagen base
 FROM node:18-bullseye as bot
 
-# Set the working directory
+# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files
+# Copiar los archivos package.json y package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Instalar dependencias
 RUN npm install
 
-# Copy the rest of the application code
+# Copiar el resto del código de la aplicación
 COPY . .
 
-# Expose the port that the app will run on
+# Exponer el puerto en el que se ejecutará la aplicación
 EXPOSE 3000
 
-# Start the application
+# Iniciar la aplicación
 CMD ["npm", "start"]

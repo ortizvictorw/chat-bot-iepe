@@ -13,7 +13,7 @@ dotenv.config({ path: '.env' });
 
 const app = express();
 
-// Set the limits once
+// Establecer los límites una vez
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   QRPortalWeb({
-    port:PORT+1
-  });    
+    port: PORT + 1
+  });
   console.log(`Server is running on port ${PORT}`);
 });
