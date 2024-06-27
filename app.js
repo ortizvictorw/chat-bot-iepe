@@ -34,13 +34,13 @@ const main = async () => {
     database: adapterDB,
   });
 
-  const PORT = process.env.PORT || 3002;
+  const PORT = process.env.PORT || 3000;
   const PUBLIC_URL = process.env.PUBLIC_URL || 'localhost';
 
   app.get('/', (req, res) => {
     try {
       QRPortalWeb({
-        PORT: PORT,
+        port: PORT,
         publicSite: PUBLIC_URL,
       });
       res.send('<img src="bot.qr.png" alt="QR Code">');
