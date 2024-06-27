@@ -34,20 +34,20 @@ const main = async () => {
     database: adapterDB,
   });
 
-
   const PORT = process.env.PORT || 3002;
-  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
-  app.get('/', async (req, res) => {
+  app.get('/', (req, res) => {
     try {
       QRPortalWeb({
-        PORT:3002
+        PORT: PORT
       });
+      res.send('<h1>QR Code Portal is running</h1>');
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message });
     }
-});
+  });
 
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 };
 
 main();
