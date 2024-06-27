@@ -35,7 +35,7 @@ createBot({
   database: adapterDB,
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT, 10) || 3000;  // Asegurarse de que PORT sea un número
 
 app.get('/', (req, res) => {
   try {
