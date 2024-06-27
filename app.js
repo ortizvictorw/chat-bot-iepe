@@ -55,10 +55,7 @@ const main = async () => {
 
   app.listen(PORT, () => {
 
-    QRPortalWeb({
-      publicSite: PUBLIC_URL,
-      dir: 'public'
-    });    
+    QRPortalWeb();    
     console.log(`Server is running on port ${PORT}`);
   });
 };
