@@ -25,39 +25,32 @@ const flowPrincipal = addKeyword(['hola'])
     return await flowDynamic(images);
   });
 
-const main = async () => {
-  const adapterDB = new MockAdapter();
-  const adapterFlow = createFlow([flowPrincipal]);
-  const adapterProvider = createProvider(BaileysProvider);
+const adapterDB = new MockAdapter();
+const adapterFlow = createFlow([flowPrincipal]);
+const adapterProvider = createProvider(BaileysProvider);
 
-  createBot({
-    flow: adapterFlow,
-    provider: adapterProvider,
-    database: adapterDB,
-  });
+createBot({
+  flow: adapterFlow,
+  provider: adapterProvider,
+  database: adapterDB,
+});
 
-  const PORT = process.env.PORT || 3000;
-  const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost';
+const PORT = process.env.PORT || 3001;
 
-  app.get('/', (req, res) => {
-    try {
- 
-      const qrFilePath = path.join(__dirname, 'bot.qr.png');
-      if (fs.existsSync(qrFilePath)) {
-        res.sendFile(qrFilePath);
-      } else {
-        res.status(404).send('QR Code not found');
-      }
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+app.get('/', (req, res) => {
+  try {
+    const qrFilePath = path.join(__dirname, 'bot.qr.png');
+    if (fs.existsSync(qrFilePath)) {
+      res.sendFile(qrFilePath);
+    } else {
+      res.status(404).send('QR Code not found');
     }
-  });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-  app.listen(PORT, () => {
-
-    QRPortalWeb();    
-    console.log(`Server is running on port ${PORT}`);
-  });
-};
-
-main();
+app.listen(PORT, () => {
+  QRPortalWeb();    
+  console.log(`Server is running on port ${PORT}`);
+});
