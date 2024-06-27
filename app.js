@@ -6,6 +6,7 @@ const { generateImages } = require('./generateImage.service');
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 
 dotenv.config({ path: '.env' });
 
@@ -14,6 +15,7 @@ const app = express();
 // Set the limits once
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 const flowPrincipal = addKeyword(['hola'])
@@ -35,13 +37,14 @@ const main = async () => {
   });
 
   const PORT = process.env.PORT || 3000;
-  const PUBLIC_URL = process.env.PUBLIC_URL || 'localhost';
+  const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost';
 
-  app.get('/', (req, res) => {
+  app.get('/qr', (req, res) => {
     try {
       QRPortalWeb({
         port: PORT,
         publicSite: PUBLIC_URL,
+        dir: 'public'
       });
       res.send('<img src="bot.qr.png" alt="QR Code">');
     } catch (error) {
@@ -49,7 +52,9 @@ const main = async () => {
     }
   });
 
-  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 };
 
 main();
