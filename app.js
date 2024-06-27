@@ -7,6 +7,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 dotenv.config({ path: '.env' });
 
@@ -15,7 +16,6 @@ const app = express();
 // Set the limits once
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 const flowPrincipal = addKeyword(['hola'])
@@ -39,14 +39,19 @@ const main = async () => {
   const PORT = process.env.PORT || 3000;
   const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost';
 
-  app.get('/qr', (req, res) => {
+  app.get('/', (req, res) => {
     try {
       QRPortalWeb({
         port: PORT,
         publicSite: PUBLIC_URL,
         dir: 'public'
       });
-      res.send('<img src="bot.qr.png" alt="QR Code">');
+      const qrFilePath = path.join(__dirname, 'bot.qr.png');
+      if (fs.existsSync(qrFilePath)) {
+        res.sendFile(qrFilePath);
+      } else {
+        res.status(404).send('QR Code not found');
+      }
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
