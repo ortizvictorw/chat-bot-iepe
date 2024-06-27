@@ -35,13 +35,15 @@ const main = async () => {
   });
 
   const PORT = process.env.PORT || 3002;
+  const PUBLIC_URL = process.env.PUBLIC_URL || 'localhost';
 
   app.get('/', (req, res) => {
     try {
       QRPortalWeb({
-        PORT: PORT
+        PORT: PORT,
+        publicSite: PUBLIC_URL,
       });
-      res.send('<h1>QR Code Portal is running</h1>');
+      res.send('<img src="bot.qr.png" alt="QR Code">');
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
