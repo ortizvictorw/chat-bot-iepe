@@ -41,11 +41,7 @@ const main = async () => {
 
   app.get('/', (req, res) => {
     try {
-      QRPortalWeb({
-        port: PORT,
-        publicSite: PUBLIC_URL,
-        dir: 'public'
-      });
+ 
       const qrFilePath = path.join(__dirname, 'bot.qr.png');
       if (fs.existsSync(qrFilePath)) {
         res.sendFile(qrFilePath);
@@ -58,6 +54,11 @@ const main = async () => {
   });
 
   app.listen(PORT, () => {
+
+    QRPortalWeb({
+      publicSite: PUBLIC_URL,
+      dir: 'public'
+    });    
     console.log(`Server is running on port ${PORT}`);
   });
 };
