@@ -8,25 +8,27 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+let images = ''
 
 dotenv.config({ path: '.env' });
 
 const app = express();
 
-// Establecer los límites una vez
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
 
-const flowPrincipal = addKeyword(['hola'])
-  .addAnswer(['🙌 Hola bienvenido a este *TetenBot*', 'ingresa una descripción completa de la imagen que quieres generar..'])
-  .addAction({ capture: true }, async (ctx, { flowDynamic }) => {
-    const images = await generateImages(ctx.body);
-    return await flowDynamic(images);
-  });
+const flowSaludo = addKeyword('hola').addAnswer('¡Hola! ¿Que deseas que te genere?').addAction({ capture: true }, async (ctx, { flowDynamic }) => {
+  const imagesResponse = await generateImages(ctx.body);
+  images = await flowDynamic(imagesResponse);
+})
+const flowDespedida = addKeyword('adios').addAnswer('¡Hasta luego! Espero haberte sido de ayuda.');
+const flowImagen = addKeyword('imagen').addAnswer('¡Aquí tienes una imagen!', { media: images });
+
 
 const adapterDB = new MockAdapter();
-const adapterFlow = createFlow([flowPrincipal]);
+const adapterFlow = createFlow([flowSaludo, flowDespedida, flowImagen]);
+//const adapterFlow = createFlow([flowPrincipal]);
 const adapterProvider = createProvider(BaileysProvider);
 
 createBot({
@@ -35,7 +37,7 @@ createBot({
   database: adapterDB,
 });
 
-const PORT = parseInt(process.env.PORT, 10) || 3000;  // Asegurarse de que PORT sea un número
+const PORT = parseInt(process.env.PORT, 10) || 3000; 
 
 app.get('/', (req, res) => {
   try {

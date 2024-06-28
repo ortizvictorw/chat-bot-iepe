@@ -4,7 +4,7 @@ const Replicate = require('replicate');
 
 async function generateImages(mensaje) {
     const replicate = new Replicate({
-        auth: 'r8_WKqEwGnvxZcB5Il0gQP9gpShzGncXEV0Hn45z',
+        auth: process.env.REPLICATE_API_KEY,
       });
     const models = [
       {
@@ -18,7 +18,7 @@ async function generateImages(mensaje) {
           negative_prompt: "ugly, distorted"
         }
       },
-      {
+/*       {
         id: "bytedance/sdxl-lightning-4step:5f24084160c9089501c1b3545d9be3c27883ae2239b6f412990e82d4a6210f8f",
         input: {
           width: 1024,
@@ -45,7 +45,7 @@ async function generateImages(mensaje) {
           prompt_strength: 0.8,
           num_inference_steps: 20
         }
-      }
+      } */
     ];
   
     const promises = models.map(model => replicate.run(model.id, { input: model.input }));
